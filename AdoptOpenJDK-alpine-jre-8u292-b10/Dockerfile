@@ -17,19 +17,15 @@
 # limitations under the License.
 #
 
-FROM alpine:3.13
+FROM alpine:latest
 
-ENV LANG='zh_CN.UTF-8'
+ENV LANG='zh_CN.UTF-8' LANGUAGE='zh_CN:zh' LC_ALL='zh_CN.UTF-8'
 
-# 20210524 by jiangliheng 定义时区变量 start
-ENV TIME_ZONE Asiz/Shanghai
-# 20210524 by jiangliheng 定义时区变量 end
+ENV TIME_ZONE Asia/Shanghai
 
 RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
-    ##### 20210524 by jiangliheng 设置时区 start
-    && echo "${TIME_ZONE}" > /etc/timezone \
-    && ln -sf /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime \
-    ##### 20210524 by jiangliheng 设置时区 end
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    && echo "${TIME_ZONE}" > /etc/timezone && \
     && GLIBC_VER="2.31-r0" \
     && ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
     && GCC_LIBS_URL="https://archive.archlinux.org/packages/g/gcc-libs/gcc-libs-10.1.0-2-x86_64.pkg.tar.zst" \
@@ -59,7 +55,7 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
     && mkdir /tmp/libz \
     && tar -xf /tmp/libz.tar.xz -C /tmp/libz \
     && mv /tmp/libz/usr/lib/libz.so* /usr/glibc-compat/lib \
-    && apk del --purge .build-deps glibc-i18n tzdata \
+    && apk del --purge .build-deps glibc-i18n \
     && rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*
 
 
