@@ -24,8 +24,8 @@ ENV LANG='zh_CN.UTF-8' LANGUAGE='zh_CN:zh' LC_ALL='zh_CN.UTF-8'
 ENV TIME_ZONE Asia/Shanghai
 
 RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
-    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-    && echo "${TIME_ZONE}" > /etc/timezone && \
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "${TIME_ZONE}" > /etc/timezone \
     && GLIBC_VER="2.31-r0" \
     && ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
     && GCC_LIBS_URL="https://archive.archlinux.org/packages/g/gcc-libs/gcc-libs-10.1.0-2-x86_64.pkg.tar.zst" \
