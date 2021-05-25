@@ -1,5 +1,5 @@
 # AdoptOpenjdk-alpine-jre-hotspot-8u292-b10
-# 基于 AdoptOpenJDK 官方修改：https://github.com/AdoptOpenJDK/openjdk-docker/blob/master/8/jre/alpine/Dockerfile.hotspot.releases.full
+# 基于 AdoptOpenJDK 官方修改：https://github.com/AdoptOpenJDK/openjdk-docker/blob/master/8/jre/
 # 修改点：
 # 1. 修改字符集为： zh_CN.UTF-8
 # 2. 修改时区为：Asia/Shanghai
@@ -10,15 +10,15 @@ FROM alpine:3.13
 # 作者信息
 MAINTAINER jiang_liheng <jiang_liheng@163.com>
 
-# 环境变量
+# 字符集变量
 ENV LANG='zh_CN.UTF-8' LANGUAGE='zh_CN:zh' LC_ALL='zh_CN.UTF-8'
 
-# 时区设置
+# 时区变量
 ENV TIME_ZONE Asia/Shanghai
 
 # 安装依赖，设置时区
 RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
-    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && cp /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime \
     && echo "${TIME_ZONE}" > /etc/timezone \
     && GLIBC_VER="2.31-r0" \
     && ALPINE_GLIBC_REPO="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" \
