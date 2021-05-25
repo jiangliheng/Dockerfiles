@@ -21,6 +21,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends tzdata curl ca-certificates fontconfig locales \
     && echo "zh_CN.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen zh_CN.UTF-8 \
+    && ln -sf /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime \
     && rm -rf /var/lib/apt/lists/*
 
 # java 版本
