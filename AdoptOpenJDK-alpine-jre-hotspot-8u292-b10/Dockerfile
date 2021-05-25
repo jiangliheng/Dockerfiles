@@ -1,28 +1,22 @@
-# ------------------------------------------------------------------------------
-#               NOTE: THIS DOCKERFILE IS GENERATED VIA "build_latest.sh" or "update_multiarch.sh"
-#
-#                       PLEASE DO NOT EDIT IT DIRECTLY.
-# ------------------------------------------------------------------------------
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# AdoptOpenjdk-alpine-jre-hotspot-8u292-b10
+# 基于 AdoptOpenJDK 官方修改：https://github.com/AdoptOpenJDK/openjdk-docker/blob/master/8/jre/alpine/Dockerfile.hotspot.releases.full
+# 修改点：
+# 1. 修改字符集为： zh_CN.UTF-8
+# 2. 修改时区为：Asia/Shanghai
 
-FROM alpine:latest
+# 基础镜像
+FROM alpine:3.13
 
+# 作者信息
+MAINTAINER jiang_liheng <jiang_liheng@163.com>
+
+# 环境变量
 ENV LANG='zh_CN.UTF-8' LANGUAGE='zh_CN:zh' LC_ALL='zh_CN.UTF-8'
 
+# 时区设置
 ENV TIME_ZONE Asia/Shanghai
 
+# 安装依赖，设置时区
 RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "${TIME_ZONE}" > /etc/timezone \
@@ -58,9 +52,10 @@ RUN apk add --no-cache tzdata --virtual .build-deps curl binutils zstd \
     && apk del --purge .build-deps glibc-i18n \
     && rm -rf /tmp/*.apk /tmp/gcc /tmp/gcc-libs.tar* /tmp/libz /tmp/libz.tar.xz /var/cache/apk/*
 
-
+# java 版本
 ENV JAVA_VERSION jdk8u292-b10
 
+# 安装 jre
 RUN set -eux; \
     apk add --no-cache --virtual .fetch-deps curl; \
     ARCH="$(apk --print-arch)"; \
@@ -83,5 +78,6 @@ RUN set -eux; \
     rm -rf /var/cache/apk/*; \
     rm -rf /tmp/openjdk.tar.gz;
 
+# 设置环境变量
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH="/opt/java/openjdk/bin:$PATH"
