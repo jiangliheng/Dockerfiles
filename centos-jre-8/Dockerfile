@@ -11,7 +11,7 @@ FROM centos:7
 MAINTAINER jiang_liheng <jiang_liheng@163.com>
 
 # 字符集变量
-ENV LANG='zh_CN.UTF-8'
+ENV LANG='c.UTF-8'
 
 # 时区变量
 ENV TIME_ZONE Asia/Shanghai
@@ -21,7 +21,7 @@ RUN yum install -y tzdata openssl curl ca-certificates fontconfig gzip tar; \
     yum update -y; yum clean all; \
     cp /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime; \
     echo "${TIME_ZONE}" > /etc/timezone; \
-    echo "LANG=zh_CN.UTF-8" > /etc/locale.conf;
+    echo "LANG=c.UTF-8" > /etc/locale.conf;
 
 # java 版本
 ENV JAVA_VERSION jdk8u292-b10
